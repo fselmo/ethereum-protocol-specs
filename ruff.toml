@@ -1,0 +1,29 @@
+# Ruff configuration file - provides more detailed configuration than pyproject.toml
+# This file can be used for project-specific overrides
+
+[lint]
+# Enable additional rule sets beyond those in pyproject.toml
+extend-select = [
+    "PT",  # flake8-pytest-style
+    "SIM", # flake8-simplify
+    "TCH", # flake8-type-checking
+    "ARG", # flake8-unused-arguments
+    "PTH", # flake8-use-pathlib
+]
+
+# Additional ignores for specific cases
+extend-ignore = [
+    "SIM108", # Use ternary operator instead of if-else block
+    "PTH123", # Use Path.open() instead of open()
+]
+
+[format]
+# Use double quotes for strings
+quote-style = "double"
+
+# Preserve existing quotes
+skip-magic-trailing-comma = true
+
+# Format docstrings
+docstring-code-format = true
+docstring-code-line-length = 88

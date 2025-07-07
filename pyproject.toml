@@ -1,0 +1,142 @@
+[build-system]
+requires = ["hatchling>=1.25.0,<2"]
+build-backend = "hatchling.build"
+
+[project]
+name = "{PACKAGE_NAME}"
+version = "0.1.0"
+description = "Ethereum protocol specifications"
+readme = "README.md"
+license = { file = "LICENSE" }
+authors = [
+    { name = "{AUTHOR_NAME}", email = "{AUTHOR_EMAIL}" },
+]
+keywords = ["ethereum", "specifications", "protocol"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Natural Language :: English",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+]
+requires-python = ">=3.12"
+dependencies = [
+    "pydantic>=2.9.2,<3",
+    "typing-extensions>=4.4",
+]
+
+[project.optional-dependencies]
+test = [
+    "pytest>=8.3.3,<9",
+    "pytest-cov>=6.0.0,<7",
+    "pytest-xdist>=3.6.1,<4",
+]
+lint = [
+    "ruff>=0.8.0,<1",
+]
+typecheck = [
+    "mypy>=1.13.0,<2",
+]
+docs = [
+    "mkdocs>=1.6.1,<2",
+    "mkdocs-material>=9.5.45,<10",
+    "mkdocstrings[python]>=0.27.0,<1",
+]
+dev = [
+    "{PACKAGE_NAME}[test,lint,typecheck,docs]",
+    "tox>=4.23.0,<5",
+    "pre-commit>=3.8.0,<4",
+]
+
+[project.urls]
+"Homepage" = "https://github.com/{GITHUB_ORG}/{PACKAGE_NAME}"
+"Source" = "https://github.com/{GITHUB_ORG}/{PACKAGE_NAME}"
+"Issues" = "https://github.com/{GITHUB_ORG}/{PACKAGE_NAME}/issues"
+
+[tool.hatch.build]
+exclude = [
+    ".*",
+    "tests/",
+    "docs/",
+]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/specs", "src/subspecs"]
+
+[tool.hatch.build.targets.wheel.force-include]
+"src/py.typed" = "py.typed"
+"src/specs/py.typed" = "specs/py.typed"
+"src/subspecs/py.typed" = "subspecs/py.typed"
+
+[tool.ruff]
+line-length = 99
+
+[tool.ruff.format]
+docstring-code-format = true
+
+[tool.ruff.lint]
+select = ["E", "F", "B", "W", "I", "A", "N", "D", "C"]
+fixable = ["I", "B", "E", "F", "W", "D", "C"]
+ignore = ["D205", "D203", "D212", "D415", "C901", "A005", "C420"]
+
+[tool.ruff.lint.pydocstyle]
+convention = "google"
+
+[tool.ruff.lint.isort]
+force-single-line = false
+known-first-party = ["specs", "subspecs"]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/**" = ["D", "F401", "F403"]
+
+[tool.mypy]
+python_version = "3.12"
+plugins = ["pydantic.mypy"]
+strict = true
+warn_return_any = true
+warn_unused_configs = true
+no_implicit_reexport = true
+namespace_packages = true
+explicit_package_bases = true
+
+[[tool.mypy.overrides]]
+module = "tests.*"
+ignore_errors = true
+
+[tool.pytest.ini_options]
+minversion = "8.3.3"
+testpaths = ["tests"]
+python_files = "test_*.py"
+addopts = [
+    "-ra",
+    "--strict-markers",
+    "--cov=src",
+    "--cov-report=term-missing",
+    "--cov-report=html",
+    "--cov-branch",
+]
+markers = [
+    "slow: marks tests as slow (deselect with '-m \"not slow\"')",
+]
+
+[tool.coverage.run]
+source = ["src"]
+branch = true
+
+[tool.coverage.report]
+exclude_lines = [
+    "pragma: no cover",
+    "def __repr__",
+    "if TYPE_CHECKING:",
+    "raise NotImplementedError",
+    "if __name__ == .__main__.:",
+]
+
+[tool.uv]
+dev-dependencies = [
+    "ipython>=8.31.0,<9",
+    "ipdb>=0.13",
+]
