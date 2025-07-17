@@ -83,7 +83,7 @@ cd {PROJECT_NAME}
 # Install dependencies
 uv sync --all-extras
 
-# Install pre-commit hooks (optional but recommended)
+# Install pre-commit hooks (optional)
 uvx pre-commit install
 
 # Run tests to verify setup
@@ -151,7 +151,7 @@ uvx --with=tox-uv tox -e lint
 uvx --with=tox-uv tox -av
 ```
 
-### Pre-commit Hooks
+### Pre-commit Hooks (Optional)
 
 The project includes pre-commit hooks that automatically check your code before commits:
 
